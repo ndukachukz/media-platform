@@ -1,3 +1,4 @@
+"use state";
 // PostCarousel.js
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
