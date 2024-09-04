@@ -1,6 +1,13 @@
 "use client";
 import { useState } from "react";
-import { TextInput, Button, FileInput, Stack, Container } from "@mantine/core";
+import {
+  TextInput,
+  Button,
+  FileInput,
+  Stack,
+  Container,
+  TagsInput,
+} from "@mantine/core";
 import RichTextEditorComponent from "@/components/shared/rich-text-editor";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -67,6 +74,22 @@ export default function CreatePost() {
                 <FormItem>
                   <FormControl>
                     <TextInput label="Title" {...field} required />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <TagsInput
+                      label="Press Enter to submit a tag"
+                      placeholder="Enter tag"
+                      defaultValue={["React, Tech", "Entertainment"]}
+                      clearable
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
