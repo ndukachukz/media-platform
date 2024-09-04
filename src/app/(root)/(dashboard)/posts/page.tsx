@@ -1,7 +1,12 @@
-import React from "react";
+export default async function PostsPage() {
+  const response = await fetch(`/api/posts`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-function PostsPage() {
-  return <div>PostsPage</div>;
+  const posts = await response.json();
+
+  return <pre>{posts}</pre>;
 }
-
-export default PostsPage;
