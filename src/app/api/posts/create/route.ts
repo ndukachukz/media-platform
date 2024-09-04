@@ -15,7 +15,7 @@ export async function POST(req: Request, res: Response) {
         title: validatedData.title,
         content: validatedData.content,
         images: validatedData.images,
-        creator: { connect: { id: body.user.id } },
+        creator: { connect: { id: userId } },
         tags: { create: validatedData.tags },
         slug: validatedData.slug,
       },

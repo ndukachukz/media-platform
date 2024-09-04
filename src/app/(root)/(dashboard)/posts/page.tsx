@@ -1,3 +1,5 @@
+import React from "react";
+
 export default async function PostsPage() {
   const response = await fetch(`/api/posts`, {
     method: "GET",
