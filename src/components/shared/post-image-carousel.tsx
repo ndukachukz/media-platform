@@ -1,4 +1,4 @@
-"use state";
+"use client";
 // PostCarousel.js
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
