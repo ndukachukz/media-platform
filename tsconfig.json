@@ -19,8 +19,17 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "experimentalDecorators": true, // Add this line
+    "emitDecoratorMetadata": true // Add this line
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "knexfile.mts",
+    "src/components/shared/news-article"
+  ],
   "exclude": ["node_modules"]
 }

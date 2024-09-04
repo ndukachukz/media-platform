@@ -1,6 +1,13 @@
 import React from "react";
-import { Image, Card, Text, Group, Button, rem } from "@mantine/core";
-import { Carousel } from "@mantine/carousel";
+import { Image, Text, Group, Button, rem } from "@mantine/core";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { CardContent, Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
 
 const images = [
@@ -12,38 +19,32 @@ const images = [
 ];
 
 export default function NewsCardCarousel() {
-  const slides = images.map((image) => (
-    <Carousel.Slide key={image}>
-      <Image alt="carousel-image-item" src={image} height={220} />
-    </Carousel.Slide>
+  const slides = images.map((image, index) => (
+    <CarouselItem key={image} className="md:basis-1/2 lg:basis-1/3">
+      <div className="p-1">
+        <Card>
+          <CardContent className="px-0 py-0">
+            <Image src={image} alt="news image" className="size-full" />
+          </CardContent>
+        </Card>
+      </div>
+    </CarouselItem>
   ));
 
   return (
-    <Card radius="md" withBorder padding="xl">
-      <Card.Section>
+    <Card className="rounded-md px-5 py-5">
+      <Card>
         <Carousel
-          withIndicators
-          loop
-          styles={{
-            control: {
-              "&[data-inactive]": {
-                opacity: 0,
-                cursor: "default",
-              },
-            },
-            indicator: {
-              width: rem(4),
-              height: rem(4),
-              transition: "width 250ms ease",
-              "&[data-active]": {
-                width: rem(16),
-              },
-            },
+          opts={{
+            align: "start",
           }}
+          className="w-full max-w-sm"
         >
-          {slides}
+          <CarouselContent>{slides}</CarouselContent>
+          <CarouselPrevious className="-left-5" />
+          <CarouselNext className="max-sm:-right-5 md:-right-9 " />
         </Carousel>
-      </Card.Section>
+      </Card>
 
       <Group justify="space-between" mt="lg">
         <Text fw={500} fz="lg">
@@ -65,17 +66,7 @@ export default function NewsCardCarousel() {
       </Text>
 
       <Group justify="space-between" mt="md">
-        <div>
-          <Text fz="xl" span fw={500}>
-            397$
-          </Text>
-          <Text span fz="sm" c="dimmed">
-            {" "}
-            / night
-          </Text>
-        </div>
-
-        <Button radius="md">Book now</Button>
+        <Button radius="md">Read now</Button>
       </Group>
     </Card>
   );

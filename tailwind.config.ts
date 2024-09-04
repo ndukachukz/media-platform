@@ -74,7 +74,8 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        sans: ["var(--font-montserrat)", ...fontFamily.sans],
+        serif: ["var(--font-montserrat)", ...fontFamily.serif],
+        sans: ["var(--font-poppins)", ...fontFamily.sans],
       },
     },
   },

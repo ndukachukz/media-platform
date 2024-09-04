@@ -1,0 +1,109 @@
+.footer {
+  margin-top: 2.5rem; /* 120px / 16px */
+  padding-top: calc(var(--mantine-spacing-xl));
+  padding-bottom: calc(var(--mantine-spacing-xl));
+  background-color: var(--mantine-color-gray-0);
+  border-top: 0.0625rem solid var(--mantine-color-gray-2);
+}
+
+.logo {
+  max-width: 12.5rem; /* 200px / 16px */
+}
+
+.description {
+  margin-top: 0.3125rem; /* 5px / 16px */
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wrapper {
+  width: 10rem; /* 160px / 16px */
+}
+
+.link {
+  display: block;
+  color: var(--mantine-color-gray-6);
+  font-size: var(--mantine-font-size-sm);
+  padding-top: 0.1875rem; /* 3px / 16px */
+  padding-bottom: 0.1875rem; /* 3px / 16px */
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.title {
+  font-size: var(--mantine-font-size-lg);
+  font-weight: 700;
+  font-family: Greycliff CF, var(--mantine-font-family);
+  margin-bottom: calc(var(--mantine-spacing-xl) / 4);
+  color: black;
+}
+
+.afterFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--mantine-spacing-xl);
+  padding-top: var(--mantine-spacing-xl);
+  padding-bottom: var(--mantine-spacing-xl);
+  border-top: 0.0625rem solid var(--mantine-color-gray-2);
+}
+
+@media (max-width: 48em) {
+  /* Equivalent to $mantine-breakpoint-sm */
+  .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .description {
+    margin-top: calc(var(--mantine-spacing-xl) / 2);
+    text-align: center;
+  }
+
+  .inner {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .groups {
+    display: none;
+  }
+
+  .afterFooter {
+    flex-direction: column;
+  }
+
+  .social {
+    margin-top: calc(var(--mantine-spacing-xl) / 2);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer {
+    background-color: var(--mantine-color-dark-6);
+    border-top-color: var(--mantine-color-dark-5);
+  }
+
+  .link {
+    color: var(--mantine-color-dark-1);
+  }
+
+  .title {
+    color: white;
+  }
+
+  .afterFooter {
+    border-top-color: var(--mantine-color-dark-4);
+  }
+}

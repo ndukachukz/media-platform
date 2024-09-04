@@ -1,7 +1,5 @@
-import { z } from "zod";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,26 +7,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import RegisterForm from "@/components/shared/register-form";
+import ForgotPasswordForm from "@/components/shared/forgot-password-form";
 
-export default function RegisterPage() {
+export default function ForgotPassword() {
   return (
     <div className="h-screen grid justify-center items-center">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Sign Up</CardTitle>
+          <CardTitle className="text-xl">Forgot Password</CardTitle>
           <CardDescription>
-            Enter your information to create an account
+            Enter your information to receive a password reset link
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <RegisterForm />
+          <ForgotPasswordForm />
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
             <Link href="/login" className="underline">
-              Sign in
+              go back
             </Link>
           </div>
         </CardContent>

@@ -1,0 +1,40 @@
+.root {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.title {
+  font-weight: 900;
+  font-size: 34px;
+  margin-bottom: 16px; /* Assuming --mantine-spacing-md is 16px */
+  font-family: "Greycliff CF", sans-serif; /* Fallback to sans-serif */
+}
+
+@media (max-width: 48em) {
+  /* Assuming $mantine-breakpoint-sm is 48em */
+  .title {
+    font-size: 32px;
+  }
+
+  .control {
+    width: 100%;
+  }
+}
+
+.mobileImage {
+  display: block;
+}
+
+.desktopImage {
+  display: none;
+}
+
+@media (min-width: 48em) {
+  .mobileImage {
+    display: none;
+  }
+
+  .desktopImage {
+    display: block;
+  }
+}

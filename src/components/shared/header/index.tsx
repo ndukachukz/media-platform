@@ -2,8 +2,11 @@
 import { useState } from "react";
 import { Container, Anchor, Group, Burger, Box } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Box as IconBox } from "lucide-react";
+import { Box as IconBox, Link } from "lucide-react";
 import classes from "./header.module.css";
+import Navbar from "@/components/shared/navbar";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 const userLinks = [
   { link: "#", label: "Privacy & Security" },
@@ -22,6 +25,7 @@ const mainLinks = [
 export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(0);
+  const pathname = usePathname();
 
   const mainItems = mainLinks.map((item, index) => (
     <Anchor<"a">
@@ -50,22 +54,18 @@ export default function Header() {
   ));
 
   return (
-    <header className={classes.header}>
+    <header className={cn(classes.header, pathname !== "/" && "hidden")}>
       <Container className={classes.inner}>
-        <IconBox size={34} />
+        <Link href="/">
+          <IconBox size={34} />
+        </Link>
         <Box className={classes.links} visibleFrom="sm">
           <Group justify="flex-end">{secondaryItems}</Group>
           <Group gap={0} justify="flex-end" className={classes.mainLinks}>
             {mainItems}
           </Group>
         </Box>
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          className={classes.burger}
-          size="sm"
-          hiddenFrom="sm"
-        />
+        <Navbar />
       </Container>
     </header>
   );

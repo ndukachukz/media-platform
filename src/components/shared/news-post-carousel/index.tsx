@@ -1,44 +1,17 @@
-import { Carousel } from "@mantine/carousel";
-import { useMediaQuery } from "@mantine/hooks";
+import NewsCardItem from "../news-carousel-card";
+
 import {
-  Paper,
-  Text,
-  Title,
-  Button,
-  useMantineTheme,
-  rem,
-} from "@mantine/core";
-import classes from "./news-post-carousel.module.css";
-import NewsCardItem from "../news-card-item";
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 interface CardProps {
   image: string;
   title: string;
   category: string;
-}
-
-function Card({ image, title, category }: CardProps) {
-  return (
-    <Paper
-      shadow="md"
-      p="xl"
-      radius="md"
-      style={{ backgroundImage: `url(${image})` }}
-      className={classes.card}
-    >
-      <div>
-        <Text className={classes.category} size="xs">
-          {category}
-        </Text>
-        <Title order={3} className={classes.title}>
-          {title}
-        </Title>
-      </div>
-      <Button variant="white" color="dark">
-        Read article
-      </Button>
-    </Paper>
-  );
 }
 
 const data = [
@@ -81,22 +54,24 @@ const data = [
 ];
 
 export default function NewsPostCarousel() {
-  const theme = useMantineTheme();
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const slides = data.map((item) => (
-    <Carousel.Slide key={item.title}>
+    <CarouselItem key={item.title}>
       <NewsCardItem />
-    </Carousel.Slide>
+    </CarouselItem>
   ));
 
   return (
     <Carousel
-      slideSize={{ base: "100%", sm: "50%" }}
-      slideGap={{ base: rem(2), sm: "xl" }}
-      align="start"
-      slidesToScroll={mobile ? 1 : 2}
+      opts={{
+        align: "start",
+      }}
+      className="w-full md:w-1/2 pt-5 md:pt-0"
     >
-      {slides}
+      <CarouselContent>{slides}</CarouselContent>
+      <div className="relative h-10 w-10 -right-12 -bottom-4">
+        <CarouselPrevious className="bottom-10" />
+        <CarouselNext />
+      </div>
     </Carousel>
   );
 }
