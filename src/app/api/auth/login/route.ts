@@ -19,13 +19,13 @@ export async function POST(req: NextRequest) {
 
     const hash = await prisma.user.findFirst({
       where: {
-        password: validatedData.password,
+        password: "validatedData.password",
       },
     });
 
     if (!hash || !hash.password) new Exception(ErrorCode.BadRequest);
 
-    const compared = bcrypt.compare(validatedData.password, hash!.password);
+    const compared = bcrypt.compare("validatedData.password", hash!.password);
 
     if (!compared) new Exception(ErrorCode.BadRequest);
 

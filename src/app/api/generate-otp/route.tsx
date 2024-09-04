@@ -1,11 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
 import { generateOTPSchema } from "@/lib/validations/auth.schemas";
 import { GenerateOTPValidator } from "@/lib/validations/validators";
 import { prisma } from "@/lib/prisma";
 import { generateOTP } from "@/lib/utils";
 import { tokenExpires } from "@/constants";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: Request, res: Response) {
   try {
     const body = await req.json();
     const validatedData = generateOTPSchema.parse(body);
@@ -16,7 +15,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     });
 
     if (errors.length > 0) {
-      return NextResponse.json({ errors: errors }, { status: 400 });
+      return Response.json({ errors: errors }, { status: 400 });
     }
 
     const userQuery = await prisma.profile.findFirst({
@@ -26,7 +25,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const otp = generateOTP();
 
     if (!userQuery) {
-      throw NextResponse.json({ errors: "user not found" }, { status: 404 });
+      throw Response.json({ errors: "user not found" }, { status: 404 });
     }
 
     const verificationToken = prisma.verificationToken.create({
@@ -39,12 +38,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     console.log("GEN OTP => ", otp);
 
-    return NextResponse.json(
+    return Response.json(
       { message: "Success", user: userQuery, otp: verificationToken },
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json(
+    return Response.json(
       { message: "send email otp error", error },
       { status: 500 }
     );

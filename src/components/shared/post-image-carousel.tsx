@@ -2,6 +2,7 @@
 // PostCarousel.js
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { CreatePostFormSchema } from "@/lib/validations/post.schemas";
 
 const images = [
   "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
@@ -9,7 +10,11 @@ const images = [
   "https://images.unsplash.com/photo-1588572878342-88c7b953e9a4?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
 ];
 
-export default function PostImageCarousel() {
+export default function PostImageCarousel({
+  images,
+}: {
+  images: CreatePostFormSchema["images"];
+}) {
   const [current, setCurrent] = useState(0);
 
   const handleNext = () => {

@@ -45,6 +45,23 @@ export default function CreatePost() {
         <form onSubmit={form.handleSubmit(submit)}>
           <Stack gap="md">
             <FormField
+              name="slug"
+              render={({ field }) => (
+                <FormItem className="hidden">
+                  <FormControl>
+                    <TextInput
+                      label="slug"
+                      onChange={(value) =>
+                        field.onChange(value.target.value.replace(" ", "-"))
+                      }
+                      required
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
               name="title"
               render={({ field }) => (
                 <FormItem>

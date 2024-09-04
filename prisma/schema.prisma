@@ -103,6 +103,7 @@ model Post {
     id          String    @id @default(cuid())
     created_at  DateTime  @default(now())
     updated_at  DateTime  @updatedAt
+    slug        String
     title       String
     content     String?
     cover_image String?

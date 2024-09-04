@@ -3,7 +3,7 @@ import { createPostFormSchema } from "@/lib/validations/post.schemas";
 import { CreatePostValidator } from "@/lib/validations/validators";
 import { auth } from "@clerk/nextjs/server";
 
-export async function Post(req: Request, res: Response) {
+export async function POST(req: Request, res: Response) {
   try {
     const { userId } = auth();
     if (!userId) return Response.redirect("/login", 400);
@@ -17,12 +17,11 @@ export async function Post(req: Request, res: Response) {
         images: validatedData.images,
         creator: { connect: { id: body.user.id } },
         tags: { create: validatedData.tags },
+        slug: validatedData.slug,
       },
     });
 
-    const postValidatorErrors = CreatePostValidator({
-      ...validatedData,
-    });
+    const postValidatorErrors = CreatePostValidator(validatedData);
 
     if (postValidatorErrors.length > 0) {
       return Response.json({ errors: postValidatorErrors }, { status: 400 });

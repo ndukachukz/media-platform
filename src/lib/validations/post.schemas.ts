@@ -1,4 +1,3 @@
-import { Post } from "@prisma/client";
 import { z } from "zod";
 
 const postTagSchema = z.object({
@@ -11,6 +10,7 @@ export const createPostFormSchema = z.object({
   images: z.array(z.string().url()),
   published: z.boolean().default(false),
   tags: z.array(postTagSchema),
+  slug: z.string(),
 });
 
 export type CreatePostFormSchema = z.infer<typeof createPostFormSchema>;

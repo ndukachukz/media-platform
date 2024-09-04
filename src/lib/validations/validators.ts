@@ -153,6 +153,10 @@ function CreatePostValidator(data: CreatePostFormSchema): Array<string> {
       field: "tags",
       validations: [(value) => (value ? null : "tags are required")],
     },
+    {
+      field: "slug",
+      validations: [(value) => (value ? null : "post slug is required")],
+    },
   ]);
 
   const errors = createPostSchema.validate(data);
