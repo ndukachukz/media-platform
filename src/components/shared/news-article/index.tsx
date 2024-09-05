@@ -41,6 +41,24 @@ export interface Article
   };
 }
 
+export function ArticleTags(tags: Article["tags"]) {
+  return (
+    <>
+      {tags &&
+        tags.map((tag: Tag) => (
+          <Badge
+            key={tag.id}
+            className={classes.rating}
+            variant="gradient"
+            gradient={{ from: "brand", to: "red" }}
+          >
+            {tag.name}
+          </Badge>
+        ))}
+    </>
+  );
+}
+
 export function NewsArticle({ className, ...article }: Article) {
   const theme = useMantineTheme();
 
@@ -52,17 +70,7 @@ export function NewsArticle({ className, ...article }: Article) {
         </Link>
       </Card.Section>
 
-      {article.tags &&
-        article.tags.map((tag: Tag) => (
-          <Badge
-            key={tag.id}
-            className={classes.rating}
-            variant="gradient"
-            gradient={{ from: "brand", to: "red" }}
-          >
-            {tag.name}
-          </Badge>
-        ))}
+      <ArticleTags {...article.tags} />
 
       <Text
         className={classes.title}
