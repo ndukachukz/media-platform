@@ -1,27 +1,27 @@
 "use client";
-import { Bookmark, Heart, Share } from "lucide-react";
+import React from "react";
 import {
   Card,
-  Image,
   Text,
-  ActionIcon,
-  Badge,
   Group,
   Center,
   Avatar,
+  ActionIcon,
   useMantineTheme,
-  rem,
 } from "@mantine/core";
+import { Heart, Bookmark, Share } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { rem } from "@mantine/core";
+import { Badge } from "@/components/ui/badge"; // Make sure to import Badge
 import classes from "./news-article.module.css";
 import { Post, Profile, Tag } from "@prisma/client";
-import Link from "next/link";
 
 export interface Author {
   id: number;
   name: string;
   avatar: string;
 }
-
 export interface INewsArticle
   extends Pick<
     Post,
@@ -41,20 +41,24 @@ export interface INewsArticle
   };
 }
 
-export function ArticleTags(tags: INewsArticle["tags"]) {
+export function ArticleTags({ tags }: { tags: INewsArticle["tags"] }) {
+  console.log("tags => ", tags);
+
+  if (!Array.isArray(tags) || tags.length === 0) {
+    return null; // or return a default component
+  }
+
   return (
     <>
-      {tags &&
-        tags.map((tag: Tag) => (
-          <Badge
-            key={tag.id}
-            className={classes.rating}
-            variant="gradient"
-            gradient={{ from: "brand", to: "red" }}
-          >
-            {tag.name}
-          </Badge>
-        ))}
+      {tags.map((tag: Tag, i) => (
+        <Badge
+          key={tag.id ?? i}
+          className={classes.rating}
+          // ... other props
+        >
+          {tag.name}
+        </Badge>
+      ))}
     </>
   );
 }
@@ -66,17 +70,22 @@ export function NewsArticle({ className, ...article }: INewsArticle) {
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
         <Link href={`/posts/${article.slug}`}>
-          <Image src={article.cover_image} alt={article.slug} height={180} />
+          <Image
+            src={article.cover_image || ""}
+            alt={article.slug}
+            height={180}
+            width={180}
+          />
         </Link>
       </Card.Section>
 
-      <ArticleTags {...article.tags} />
+      <ArticleTags tags={article.tags} />
 
       <Text
         className={classes.title}
         fw={500}
         component="a"
-        href={article.slug}
+        href={`/posts/${article.slug}`}
       >
         {article.title}
       </Text>
@@ -88,13 +97,14 @@ export function NewsArticle({ className, ...article }: INewsArticle) {
       <Group justify="space-between" className={classes.footer}>
         <Center>
           <Avatar
-            src={article.creator.profile.image}
+            src={article.creator.profile.image || ""}
             size={24}
             radius="xl"
             mr="xs"
           />
           <Text fz="sm" inline>
             {article.creator.profile.first_name +
+              " " +
               article.creator.profile.last_name}
           </Text>
         </Center>

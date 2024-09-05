@@ -4,12 +4,14 @@ import classes from "./editors-pick-article.module.css";
 import { cn } from "@/lib/utils";
 
 export default function EditorsPick({ className, ...article }: INewsArticle) {
+  console.log("Article => ", article);
+
   return (
     <Card withBorder radius="md" p={0} className={cn(classes.card, className)}>
       <Group wrap="nowrap" gap={0}>
         <Image src={article.images[0]} alt="editors pick" height={160} />
         <div className={classes.body}>
-          <ArticleTags {...article.tags} />
+          <ArticleTags tags={article.tags} />
           <Text className={classes.title} mt="xs" mb="md">
             {article.title}
           </Text>
