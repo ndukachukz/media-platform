@@ -1,54 +1,123 @@
 "use client";
 import { Tabs, rem } from "@mantine/core";
-import { INewsArticle, NewsArticle } from "./news-article";
+import { NewsArticle, Article } from "./news-article";
 import { Button } from "../ui/button";
 
 function LatestStories() {
-  const articles: INewsArticle[] = [
+  const articles: Article[] = [
     {
-      id: 1,
+      id: "1",
       title: "Breaking News",
       content: "Lorem ipsum dolor sit amet",
-      image: "/api/placeholder/600/400",
-      category: "World",
-      author: { id: 1, name: "John Doe", avatar: "/api/placeholder/40/40" },
-      created_at: new Date("2024-08-29T10:00:00"),
-    },
-    {
-      id: 2,
-      title: "Tech Update",
-      content: "Consectetur adipiscing elit",
-      image: "/api/placeholder/600/400",
-      category: "Technology",
-      author: { id: 2, name: "Jane Smith", avatar: "/api/placeholder/40/40" },
-      created_at: new Date("2024-08-29T11:30:00"),
-    },
-    {
-      id: 3,
-      title: "Sports Highlights",
-      content: "Sed do eiusmod tempor incididunt",
-      image: "/api/placeholder/600/400",
-      category: "Sports",
-      author: { id: 3, name: "Mike Johnson", avatar: "/api/placeholder/40/40" },
-      created_at: new Date("2024-08-29T09:15:00"),
-    },
-    {
-      id: 4,
-      title: "Entertainment Buzz",
-      content: "Ut labore et dolore magna aliqua",
-      image: "/api/placeholder/600/400",
-      category: "Entertainment",
-      author: { id: 4, name: "Emily Brown", avatar: "/api/placeholder/40/40" },
+      images: ["/api/placeholder/600/400"],
+      tags: [{ id: "", name: "World" }],
+      creator: {
+        profile: {
+          id: "1",
+          first_name: "John",
+          image: "/api/placeholder/40/40",
+          last_name: "doe",
+        },
+      },
       created_at: new Date("2024-08-29T14:45:00"),
+      slug: "",
+      cover_image: null,
+      creator_id: "",
     },
     {
-      id: 5,
-      title: "Science Discovery",
-      content: "Ut enim ad minim veniam",
-      image: "/api/placeholder/600/400",
-      category: "Science",
-      author: { id: 5, name: "Alex Green", avatar: "/api/placeholder/40/40" },
-      created_at: new Date("2024-08-29T16:20:00"),
+      id: "1",
+      title: "Breaking News",
+      content: "Lorem ipsum dolor sit amet",
+      images: ["/api/placeholder/600/400"],
+      tags: [{ id: "", name: "World" }],
+      creator: {
+        profile: {
+          id: "1",
+          first_name: "John",
+          image: "/api/placeholder/40/40",
+          last_name: "doe",
+        },
+      },
+      created_at: new Date("2024-08-29T14:45:00"),
+      slug: "",
+      cover_image: null,
+      creator_id: "",
+    },
+    {
+      id: "1",
+      title: "Breaking News",
+      content: "Lorem ipsum dolor sit amet",
+      images: ["/api/placeholder/600/400"],
+      tags: [{ id: "", name: "World" }],
+      creator: {
+        profile: {
+          id: "1",
+          first_name: "John",
+          image: "/api/placeholder/40/40",
+          last_name: "doe",
+        },
+      },
+      created_at: new Date("2024-08-29T14:45:00"),
+      slug: "",
+      cover_image: null,
+      creator_id: "",
+    },
+    {
+      id: "1",
+      title: "Breaking News",
+      content: "Lorem ipsum dolor sit amet",
+      images: ["/api/placeholder/600/400"],
+      tags: [{ id: "", name: "World" }],
+      creator: {
+        profile: {
+          id: "1",
+          first_name: "John",
+          image: "/api/placeholder/40/40",
+          last_name: "doe",
+        },
+      },
+      created_at: new Date("2024-08-29T14:45:00"),
+      slug: "",
+      cover_image: null,
+      creator_id: "",
+    },
+    {
+      id: "1",
+      title: "Breaking News",
+      content: "Lorem ipsum dolor sit amet",
+      images: ["/api/placeholder/600/400"],
+      tags: [{ id: "", name: "World" }],
+      creator: {
+        profile: {
+          id: "1",
+          first_name: "John",
+          image: "/api/placeholder/40/40",
+          last_name: "doe",
+        },
+      },
+      created_at: new Date("2024-08-29T14:45:00"),
+      slug: "",
+      cover_image: null,
+      creator_id: "",
+    },
+    {
+      id: "1",
+      title: "Breaking News",
+      content: "Lorem ipsum dolor sit amet",
+      images: ["/api/placeholder/600/400"],
+      tags: [{ id: "", name: "World" }],
+      creator: {
+        profile: {
+          id: "1",
+          first_name: "John",
+          image: "/api/placeholder/40/40",
+          last_name: "doe",
+        },
+      },
+      created_at: new Date("2024-08-29T14:45:00"),
+      slug: "",
+      cover_image: null,
+      creator_id: "",
     },
   ];
 
@@ -67,7 +136,6 @@ function LatestStories() {
     </div>
   );
 }
-
 export default function ArticlesMenu() {
   return (
     <Tabs defaultValue="latest-stories">

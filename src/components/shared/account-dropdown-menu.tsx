@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { SignOutButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 function AccountDropdownMenu() {
   return (
@@ -33,7 +34,9 @@ function AccountDropdownMenu() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href="/onboarding">Onboarding</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

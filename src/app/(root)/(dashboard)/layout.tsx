@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/tooltip";
 import AccountDropdownMenu from "@/components/shared/account-dropdown-menu";
 import { redirect } from "next/navigation";
-import { currentUser } from "@clerk/nextjs/server";
+import { currentUser, auth } from "@clerk/nextjs/server";
 import Navbar from "@/components/shared/navbar";
 import BreadCrumbs from "@/components/shared/breadcrumbs";
 
@@ -24,8 +24,8 @@ export const description =
   "An orders dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. The main area has a list of recent orders with a filter and export button. The main area also has a detailed view of a single order with order details, shipping information, billing information, customer information, and payment information.";
 
 export default async function Dashboard({ children }: React.PropsWithChildren) {
-  const user = await currentUser();
-  if (!user) redirect("/login");
+  const { userId } = await auth();
+  if (!userId) redirect("/login");
 
   return (
     <div className="flex min-h-screen max-w-full flex-col bg-muted/40 overflow-hidden">

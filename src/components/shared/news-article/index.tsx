@@ -13,6 +13,8 @@ import {
   rem,
 } from "@mantine/core";
 import classes from "./news-article.module.css";
+import { Post, Profile, Tag } from "@prisma/client";
+import Link from "next/link";
 
 export interface Author {
   id: number;
@@ -20,46 +22,54 @@ export interface Author {
   avatar: string;
 }
 
-export interface INewsArticle {
-  id: number;
-  title: string;
-  content: string;
-  image: string;
-  category: string;
-  author: Author;
-  created_at: Date;
-}
-
-export interface Props extends INewsArticle {
+export interface Article
+  extends Pick<
+    Post,
+    | "content"
+    | "title"
+    | "slug"
+    | "created_at"
+    | "cover_image"
+    | "id"
+    | "creator_id"
+    | "images"
+  > {
   className?: string;
+  tags: Tag[];
+  creator: {
+    profile: Pick<Profile, "image" | "first_name" | "last_name" | "id">;
+  };
 }
 
-export function NewsArticle({ className, ...article }: Props) {
-  const linkProps = {
-    href: "https://mantine.dev",
-    target: "_blank",
-    rel: "noopener noreferrer",
-  };
-
+export function NewsArticle({ className, ...article }: Article) {
   const theme = useMantineTheme();
 
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
-        <a {...linkProps}>
-          <Image src="" alt={article.image} height={180} />
-        </a>
+        <Link href={`/posts/${article.slug}`}>
+          <Image src={article.cover_image} alt={article.slug} height={180} />
+        </Link>
       </Card.Section>
 
-      <Badge
-        className={classes.rating}
-        variant="gradient"
-        gradient={{ from: "brand", to: "red" }}
-      >
-        {article.category}
-      </Badge>
+      {article.tags &&
+        article.tags.map((tag: Tag) => (
+          <Badge
+            key={tag.id}
+            className={classes.rating}
+            variant="gradient"
+            gradient={{ from: "brand", to: "red" }}
+          >
+            {tag.name}
+          </Badge>
+        ))}
 
-      <Text className={classes.title} fw={500} component="a" {...linkProps}>
+      <Text
+        className={classes.title}
+        fw={500}
+        component="a"
+        href={article.slug}
+      >
         {article.title}
       </Text>
 
@@ -69,9 +79,15 @@ export function NewsArticle({ className, ...article }: Props) {
 
       <Group justify="space-between" className={classes.footer}>
         <Center>
-          <Avatar src={article.author.avatar} size={24} radius="xl" mr="xs" />
+          <Avatar
+            src={article.creator.profile.image}
+            size={24}
+            radius="xl"
+            mr="xs"
+          />
           <Text fz="sm" inline>
-            {article.author.name}
+            {article.creator.profile.first_name +
+              article.creator.profile.last_name}
           </Text>
         </Center>
 

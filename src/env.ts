@@ -20,6 +20,7 @@ export const env = createEnv({
     SMTP_USER: z.string().min(1),
     AUTH_RESEND_KEY: z.string().min(5),
     CLERK_SECRET_KEY: z.string(),
+    WEBHOOK_SECRET: z.string(),
   },
   client: {
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
@@ -53,6 +54,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
   },
   // For Next.js >= 13.4.4, you only need to destructure client variables:
   // experimental__runtimeEnv: {

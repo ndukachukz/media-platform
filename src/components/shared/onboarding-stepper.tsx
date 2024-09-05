@@ -3,18 +3,9 @@ import { useState } from "react";
 import {
   IconUserCheck,
   IconMailOpened,
-  IconShieldCheck,
   IconCircleCheck,
 } from "@tabler/icons-react";
-import {
-  Card,
-  Stepper,
-  rem,
-  Button,
-  Group,
-  Text,
-  Container,
-} from "@mantine/core";
+import { Card, Stepper, rem, Button, Group, Text } from "@mantine/core";
 import FileDropzone from "./file-dropzone";
 import AccountTypeCard from "./account-type-card";
 
@@ -81,13 +72,15 @@ export default function OnboardingStepper() {
           </div>
         </Stepper.Step>
 
-        <Stepper.Step
+        {/* <Stepper.Step
           icon={<IconMailOpened style={{ width: rem(18), height: rem(18) }} />}
           label="Email Verification"
           description="A 6 digit OTP will be sent to your email address"
         >
-          <div className="flex justify-center "></div>
-        </Stepper.Step>
+          <div className="flex justify-center ">
+
+          </div>
+        </Stepper.Step> */}
         <Stepper.Completed>
           Completed, click back button to get to previous step
         </Stepper.Completed>
