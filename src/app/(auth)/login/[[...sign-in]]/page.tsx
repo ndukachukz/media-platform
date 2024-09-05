@@ -30,9 +30,7 @@ export default function LoginPage() {
   return (
     <div className="h-screen overflow-y-scroll w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12 mx-auto">
-        <div className="mx-auto my-auto grid w-[350px] gap-6">
-          <SignIn signUpUrl="/register" />
-        </div>
+        <SignIn signUpUrl="/register" />
       </div>
       <div className="hidden bg-muted lg:block">
         <Image
