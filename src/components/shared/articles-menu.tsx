@@ -1,10 +1,10 @@
 "use client";
 import { Tabs, rem } from "@mantine/core";
-import { NewsArticle, Article } from "./news-article";
+import { NewsArticle, INewsArticle } from "./news-article";
 import { Button } from "../ui/button";
 
 function LatestStories() {
-  const articles: Article[] = [
+  const articles: INewsArticle[] = [
     {
       id: "1",
       title: "Breaking News",

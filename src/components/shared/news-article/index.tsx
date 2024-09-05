@@ -22,7 +22,7 @@ export interface Author {
   avatar: string;
 }
 
-export interface Article
+export interface INewsArticle
   extends Pick<
     Post,
     | "content"
@@ -41,7 +41,7 @@ export interface Article
   };
 }
 
-export function ArticleTags(tags: Article["tags"]) {
+export function ArticleTags(tags: INewsArticle["tags"]) {
   return (
     <>
       {tags &&
@@ -59,7 +59,7 @@ export function ArticleTags(tags: Article["tags"]) {
   );
 }
 
-export function NewsArticle({ className, ...article }: Article) {
+export function NewsArticle({ className, ...article }: INewsArticle) {
   const theme = useMantineTheme();
 
   return (

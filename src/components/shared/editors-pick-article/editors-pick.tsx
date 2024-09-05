@@ -1,9 +1,9 @@
 import { Card, Image, Avatar, Text, Group } from "@mantine/core";
-import { Article, ArticleTags } from "@/components/shared/news-article";
+import { INewsArticle, ArticleTags } from "@/components/shared/news-article";
 import classes from "./editors-pick-article.module.css";
 import { cn } from "@/lib/utils";
 
-export default function EditorsPick({ className, ...article }: Article) {
+export default function EditorsPick({ className, ...article }: INewsArticle) {
   return (
     <Card withBorder radius="md" p={0} className={cn(classes.card, className)}>
       <Group wrap="nowrap" gap={0}>
