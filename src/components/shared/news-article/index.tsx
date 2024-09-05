@@ -8,12 +8,12 @@ import {
   Avatar,
   ActionIcon,
   useMantineTheme,
+  Badge,
 } from "@mantine/core";
 import { Heart, Bookmark, Share } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { rem } from "@mantine/core";
-import { Badge } from "@/components/ui/badge"; // Make sure to import Badge
 import classes from "./news-article.module.css";
 import { Post, Profile, Tag } from "@prisma/client";
 
@@ -42,8 +42,6 @@ export interface INewsArticle
 }
 
 export function ArticleTags({ tags }: { tags: INewsArticle["tags"] }) {
-  console.log("tags => ", tags);
-
   if (!Array.isArray(tags) || tags.length === 0) {
     return null; // or return a default component
   }
@@ -53,8 +51,9 @@ export function ArticleTags({ tags }: { tags: INewsArticle["tags"] }) {
       {tags.map((tag: Tag, i) => (
         <Badge
           key={tag.id ?? i}
-          className={classes.rating}
-          // ... other props
+          size="sm"
+          variant="gradient"
+          gradient={{ from: "brand", to: "cyan", deg: 90 }}
         >
           {tag.name}
         </Badge>

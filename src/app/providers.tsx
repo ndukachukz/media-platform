@@ -1,10 +1,21 @@
 "use client";
-import React, { PropsWithChildren } from "react";
+import React, {
+  PropsWithChildren,
+  type ReactNode,
+  createContext,
+  useRef,
+  useContext,
+} from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import "@mantine/core/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useStore } from "zustand";
+import {
+  type BreadCrumbsStore,
+  createBreadCrumbsStore,
+} from "@/stores/breadcrums-store";
 
 export const queryClient = new QueryClient();
 
@@ -26,6 +37,43 @@ const theme = createTheme({
   primaryColor: "brand",
 });
 
+export type BreadCrumbsStoreApi = ReturnType<typeof createBreadCrumbsStore>;
+
+export const BreadCrumbsStoreContext = createContext<
+  BreadCrumbsStoreApi | undefined
+>(undefined);
+
+export interface BreadCrumbsStoreProviderProps {
+  children: ReactNode;
+}
+
+export const BreadCrumbsStoreProvider = ({
+  children,
+}: BreadCrumbsStoreProviderProps) => {
+  const storeRef = useRef<BreadCrumbsStoreApi>();
+  if (!storeRef.current) {
+    storeRef.current = createBreadCrumbsStore();
+  }
+
+  return (
+    <BreadCrumbsStoreContext.Provider value={storeRef.current}>
+      {children}
+    </BreadCrumbsStoreContext.Provider>
+  );
+};
+
+export const useBreadCrumbsStore = <T,>(
+  selector: (store: BreadCrumbsStore) => T
+): T => {
+  const breadCrumbsContext = useContext(BreadCrumbsStoreContext);
+
+  if (!breadCrumbsContext) {
+    throw new Error(`useBreadCrumbs must be used within BreadCrumbsProvider`);
+  }
+
+  return useStore(breadCrumbsContext, selector);
+};
+
 export default function AppProvider(props: PropsWithChildren) {
   return (
     <ClerkProvider
@@ -46,7 +94,9 @@ export default function AppProvider(props: PropsWithChildren) {
       <MantineProvider theme={theme}>
         <TooltipProvider>
           <QueryClientProvider client={queryClient}>
-            {props.children}
+            <BreadCrumbsStoreProvider>
+              {props.children}
+            </BreadCrumbsStoreProvider>
           </QueryClientProvider>
         </TooltipProvider>
       </MantineProvider>
