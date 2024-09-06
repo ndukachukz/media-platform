@@ -12,8 +12,12 @@ export async function POST(req: Request, res: Response) {
     const validatedData = createPostFormSchema.parse(body);
 
     const user = await prisma.user.findFirst({
-      where: { clerk_id: userId },
+      where: { id: userId },
     });
+
+    if (!user) {
+      return Response.json({ error: "User not found" }, { status: 404 });
+    }
 
     const post = await prisma.post.create({
       data: {
