@@ -1,21 +1,15 @@
-import { Profile, User } from "@prisma/client";
+import { Profile, User, UserRole } from "@prisma/client";
 import { z } from "zod";
 
-export enum UserRoles {
-  CREATOR = "Creator",
-  USER = "User",
-  ADMIN = "Admin",
-}
-
 export const profileCreateSchema = z.object({
-  email_or_phone: z.string().min(1),
   first_name: z.string().min(1),
   last_name: z.string().min(1),
-  image: z.string().optional(),
-  bio: z.string().optional(),
+  image: z.string().url(),
+  bio: z.string(),
+  role: z.nativeEnum(UserRole),
 });
 
-export type ProfileCreateSchemaType = z.infer<typeof profileCreateSchema>;
+export type ProfileCreateSchema = z.infer<typeof profileCreateSchema>;
 
 export interface IUser extends User {}
 

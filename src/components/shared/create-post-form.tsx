@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { MutationObserver, useMutation } from "@tanstack/react-query";
-import { auth } from "@clerk/nextjs/server";
 import FileDropzone from "./file-dropzone";
 
 export default function CreatePostForm() {
@@ -27,6 +26,10 @@ export default function CreatePostForm() {
       content: "",
       cover_image: "",
       images: [],
+      tags: [],
+      slug: "",
+      published: false,
+      
     },
   });
 
@@ -63,56 +66,14 @@ export default function CreatePostForm() {
     mutate(data);
   };
 
+  console.log(form.formState.errors);
+  console.log(form.getValues());
+
   return (
-    <Container px={4}>
+    <Container px={4} my={4}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submit)}>
           <Stack gap="md">
-            <FormField
-              name="slug"
-              render={({ field }) => (
-                <FormItem className="hidden">
-                  <FormControl>
-                    <TextInput
-                      label="slug"
-                      onChange={(value) =>
-                        field.onChange(value.target.value.replace(" ", "-"))
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextInput label="Title" {...field} required />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="tags"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TagsInput
-                      label="Press Enter to submit a tag"
-                      placeholder="Enter tag"
-                      defaultValue={["React, Tech", "Entertainment"]}
-                      onChange={(vals) => field.onChange(vals)}
-                      required
-                      clearable
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               name="cover_image"
               render={({ field }) => (
@@ -143,12 +104,66 @@ export default function CreatePostForm() {
                 </FormItem>
               )}
             />
+
+            <FormField
+              name="slug"
+              render={({ field }) => (
+                <FormItem className="hidden">
+                  <FormControl>
+                    <TextInput
+                      label="slug"
+                      onChange={(value) => {
+                        field.onChange(value.target.value.replace(" ", "-"));
+                        console.log(value);
+                      }}
+                      value={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <TextInput label="Title" {...field} required />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <TagsInput
+                      label="Press Enter to submit a tag"
+                      placeholder="Enter tag"
+                      {...field}
+                      required
+                      clearable
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               name="content"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <RichTextEditorComponent content={field.value} {...field} />
+                    <RichTextEditorComponent
+                      content={field.value}
+                      onChange={(content) => {
+                        field.onChange(content);
+                        console.log("content => ", content);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

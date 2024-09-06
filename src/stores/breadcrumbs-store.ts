@@ -6,7 +6,7 @@ export type BreadCrumbsState = {
 };
 
 export type BreadCrumbsActions = {
-  add: (breadCrumb: string) => void;
+  add: (breadCrumb: string[]) => void;
   remove: (breadCrumb: string) => void;
 };
 
@@ -21,8 +21,8 @@ export const createBreadCrumbsStore = (
 ) => {
   return createStore<BreadCrumbsStore>()((set) => ({
     ...initState,
-    add: (breadCrumb) =>
-      set((state) => ({ breadCrumbs: [...state.breadCrumbs, breadCrumb] })),
+    add: (breadCrumbs) =>
+      set((state) => ({ breadCrumbs: [...state.breadCrumbs, ...breadCrumbs] })),
     remove: (breadCrumb) =>
       set((state) => ({
         breadCrumbs: state.breadCrumbs.filter((b) => b !== breadCrumb),

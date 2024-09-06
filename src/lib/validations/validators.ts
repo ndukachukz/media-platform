@@ -1,6 +1,6 @@
 import { EMAIL_PHONE_REGEX } from "@/constants";
 import { ValidationSchema } from "@/lib/validations/schema.validator";
-import { IProfile } from "@/types/user.type";
+import { IProfile, ProfileCreateSchema } from "@/types/user.type";
 import { GenerateOTPSchema, RegisterFormSchema } from "./auth.schemas";
 import { Payload as SendEmailPayload } from "../nodemailer";
 import { Post } from "@prisma/client";
@@ -38,8 +38,8 @@ function UserValidator(data: RegisterFormSchema): Array<string> {
   return errors;
 }
 
-function ProfileValidator(data: IProfile): Array<string> {
-  const profileSchema = new ValidationSchema<IProfile>([
+function ProfileValidator(data: ProfileCreateSchema): Array<string> {
+  const profileSchema = new ValidationSchema<ProfileCreateSchema>([
     {
       field: "first_name",
       validations: [
@@ -84,10 +84,6 @@ function ProfileValidator(data: IProfile): Array<string> {
             : "Bio must be 500 characters or less";
         },
       ],
-    },
-    {
-      field: "user_id",
-      validations: [(value) => (value ? null : "User ID is required")],
     },
   ]);
 

@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import { SignIn } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Login | Media Platform",
@@ -26,7 +28,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const { userId } = auth();
+
+  if (userId) return redirect("/dashboard");
+
   return (
     <div className="h-screen overflow-y-scroll w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12 mx-auto">

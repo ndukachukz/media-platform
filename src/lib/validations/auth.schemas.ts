@@ -1,4 +1,5 @@
 import { EMAIL_PHONE_REGEX } from "@/constants";
+import { UserRole } from "@prisma/client";
 import { z } from "zod";
 
 export const email_or_phone = z

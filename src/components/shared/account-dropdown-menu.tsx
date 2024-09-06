@@ -33,11 +33,15 @@ function AccountDropdownMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
+
+        <DropdownMenuItem>
+          <Link href="/posts/create">Create Post</Link>
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link href="/onboarding">Onboarding</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <SignOutButton>Logout</SignOutButton>

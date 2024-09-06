@@ -3,6 +3,7 @@ import { z } from "zod";
 const postTagSchema = z.object({
   name: z.string(),
 });
+
 export const createPostFormSchema = z.object({
   content: z.string(),
   title: z.string(),

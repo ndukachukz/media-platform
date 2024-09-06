@@ -1,14 +1,9 @@
 "use client";
-import {
-  Card as MNCard,
-  rem,
-  Stepper,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { Card as MNCard, Text } from "@mantine/core";
 import classes from "./account-type-card.module.css";
-import { UserRoles } from "@/types/user.type";
 import { Dispatch, SetStateAction } from "react";
+import { ProfileCreateSchema } from "@/types/user.type";
+import { cn } from "@/lib/utils";
 
 export default function AccountTypeCard({
   onSelect,
@@ -16,14 +11,11 @@ export default function AccountTypeCard({
   title,
   id,
 }: {
-  id: "Admin" | "User";
-  onSelect: Dispatch<SetStateAction<"User" | "Admin">>;
+  id: ProfileCreateSchema["role"];
+  onSelect: Dispatch<SetStateAction<ProfileCreateSchema["role"]>>;
   image: string;
   title: string;
 }) {
-  const theme = useMantineTheme();
-  console.log(image);
-
   return (
     <MNCard
       onClick={() => {
@@ -31,21 +23,22 @@ export default function AccountTypeCard({
       }}
       p="lg"
       shadow="lg"
-      className={classes.card}
+      className={cn(classes.card, "w-full")}
       radius="md"
       component="button"
+      type="button"
     >
       <div
-        className={classes.image}
+        className={cn(classes.image, "w-full")}
         style={{
           backgroundImage: `url(${image})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
       />
-      <div className={classes.overlay} />
+      <div className={cn(classes.overlay, "w-full")} />
 
-      <div className={classes.content}>
+      <div className={cn(classes.content)}>
         <div>
           <Text size="lg" className={classes.title} fw={500}>
             {title}

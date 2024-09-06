@@ -20,7 +20,7 @@ export default function PostsPage() {
   const add = useBreadCrumbsStore((store) => store.add);
 
   useEffect(() => {
-    add("Posts");
+    add(["Posts"]);
   }, []);
 
   const { data, isPending, isError } = useQuery({

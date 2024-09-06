@@ -15,7 +15,7 @@ import { useStore } from "zustand";
 import {
   type BreadCrumbsStore,
   createBreadCrumbsStore,
-} from "@/stores/breadcrums-store";
+} from "@/stores/breadcrumbs-store";
 
 export const queryClient = new QueryClient();
 
