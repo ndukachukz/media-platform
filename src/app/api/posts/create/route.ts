@@ -6,9 +6,14 @@ import { auth } from "@clerk/nextjs/server";
 export async function POST(req: Request, res: Response) {
   try {
     const { userId } = auth();
-    if (!userId) return Response.redirect("/login", 400);
+    if (!userId) return Response.redirect("/login", 401);
+
     const body = await req.json();
     const validatedData = createPostFormSchema.parse(body);
+
+    const user = await prisma.user.findFirst({
+      where: { OR: [{ id: userId }, { clerk_id: userId }] },
+    });
 
     const post = await prisma.post.create({
       data: {

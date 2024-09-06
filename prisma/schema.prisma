@@ -27,7 +27,7 @@ model User {
     comments      Comment[]
     likes         Like[]
     profile       Profile?
-    password      String
+    clerk_id      String
 }
 
 model Profile {

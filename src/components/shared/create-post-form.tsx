@@ -1,13 +1,5 @@
 "use client";
-import { useState } from "react";
-import {
-  TextInput,
-  Button,
-  FileInput,
-  Stack,
-  Container,
-  TagsInput,
-} from "@mantine/core";
+import { TextInput, Button, Stack, Container, TagsInput } from "@mantine/core";
 import RichTextEditorComponent from "@/components/shared/rich-text-editor";
 import { redirect, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -24,6 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { MutationObserver, useMutation } from "@tanstack/react-query";
+import { auth } from "@clerk/nextjs/server";
+import FileDropzone from "./file-dropzone";
 
 export default function CreatePostForm() {
   const form = useForm<CreatePostFormSchema>({
@@ -37,7 +31,7 @@ export default function CreatePostForm() {
   });
 
   const router = useRouter();
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (data: CreatePostFormSchema) => {
       // Make API request to create post
       const response = await fetch("/api/posts/create", {
@@ -47,6 +41,7 @@ export default function CreatePostForm() {
         },
         body: JSON.stringify(data),
       });
+
       if (!response.ok) {
         throw new Error("Error creating post");
       }
@@ -83,7 +78,6 @@ export default function CreatePostForm() {
                       onChange={(value) =>
                         field.onChange(value.target.value.replace(" ", "-"))
                       }
-                      required
                     />
                   </FormControl>
                   <FormMessage />
@@ -110,6 +104,7 @@ export default function CreatePostForm() {
                       label="Press Enter to submit a tag"
                       placeholder="Enter tag"
                       defaultValue={["React, Tech", "Entertainment"]}
+                      onChange={(vals) => field.onChange(vals)}
                       required
                       clearable
                     />
@@ -123,10 +118,9 @@ export default function CreatePostForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <FileInput
-                      label="Cover Image"
-                      accept="image/*"
-                      required
+                    <FileDropzone
+                      title="Cover Image"
+                      multiple={false}
                       {...field}
                     />
                   </FormControl>
@@ -139,9 +133,8 @@ export default function CreatePostForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <FileInput
-                      label="Additional Images"
-                      accept="image/*"
+                    <FileDropzone
+                      title="Additional Images"
                       multiple
                       {...field}
                     />
