@@ -10,6 +10,8 @@ export default function RegisterPage() {
     <div className="h-screen grid justify-center items-center pt-10 mb-10">
       <SignUp
         signInUrl="/login"
+        signInFallbackRedirectUrl={"/dashboard"}
+        signInForceRedirectUrl={"/dashboard"}
         fallbackRedirectUrl={"/onboarding"}
         forceRedirectUrl={"/onboarding"}
       />
