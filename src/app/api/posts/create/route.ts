@@ -25,8 +25,8 @@ export async function POST(req: Request, res: Response) {
         content: validatedData.content,
         images: validatedData.images,
         creator: { connect: { id: userId } },
-        tags: { create: validatedData.tags },
-        slug: validatedData.slug,
+        tags: { create: validatedData.tags.map((tag) => ({ name: tag })) },
+        slug: validatedData.slug.replace(" ", "-"),
       },
     });
 

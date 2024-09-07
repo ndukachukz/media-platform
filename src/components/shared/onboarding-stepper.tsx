@@ -105,16 +105,23 @@ export default function OnboardingStepper() {
           <Form {...forms}>
             <form onSubmit={forms.handleSubmit(submit)}>
               <div className="grid grid-cols-1 md:grid-cols-2  gap-5">
-                <FormItem>
-                  <FormControl>
-                    <FileDropzone
-                      title="Upload Profile Picture"
-                      className="col-span-2 border rounded border-dashed mb-5"
-                      value=""
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                <FormField
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileDropzone
+                          title="Upload Profile Picture"
+                          className="col-span-2 border rounded border-dashed mb-5"
+                          folder="profile"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <div className="grid gap-3 w-full">
                   <FormField
                     name="first_name"

@@ -2,62 +2,89 @@ import React, { useState } from "react";
 import { Group, Text, rem, Image, LoadingOverlay, Box } from "@mantine/core";
 import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { env } from "@/env";
+import crypto from "crypto";
 
 interface Props extends Partial<DropzoneProps> {
   description?: string;
   value: string;
+  folder: string;
 }
+
+const generateSignature = (
+  timestamp: number,
+  apiSecret: string,
+  folder?: string
+) => {
+  const stringToSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+  return crypto.createHash("sha1").update(stringToSign).digest("hex");
+};
+
+const uploadSingleImage = async (
+  file: File,
+  folder: string,
+  timestamp: number,
+  signature: string
+) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  formData.append("timestamp", timestamp.toString());
+  formData.append("api_key", env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+  formData.append("signature", signature);
+  formData.append("folder", folder);
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_API_NAME}/image/upload`, // Replace with your Cloudinary cloud name
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const data = await response.json();
+    console.log("data => ", data);
+    return data.secure_url;
+  } catch (error) {
+    console.error("Upload error:", error);
+    throw error;
+  }
+};
+
+const uploadToCloudinary = async (files: File[], folder = "my_uploads") => {
+  const timestamp = Date.now();
+  const signature = generateSignature(
+    timestamp,
+    env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
+    folder
+  );
+
+  try {
+    const uploadPromises = files.map((file) =>
+      uploadSingleImage(file, folder, timestamp, signature)
+    );
+    const results = await Promise.all(uploadPromises);
+    console.log("Upload results: ", results);
+    return results;
+  } catch (error) {
+    console.error("Error uploading to Cloudinary:", error);
+    throw error;
+  }
+};
 
 export default function FileDropzone({
   description = "Attach as many files as you like, each file should not exceed 5mb",
   onChange,
+  folder = "unkwon",
   ...props
 }: Props) {
-  const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState<boolean>(false);
-
-  const previews = files.map((file, index) => {
-    const imageUrl = URL.createObjectURL(file);
-    return (
-      <Image
-        key={index}
-        src={imageUrl}
-        alt={`Preview ${index}`}
-        onLoad={() => URL.revokeObjectURL(imageUrl)}
-        style={{ maxWidth: "100%", maxHeight: "200px", objectFit: "contain" }}
-      />
-    );
-  });
-
-  const uploadToCloudinary = async (files: File[]) => {
-    const formData = new FormData();
-    files.forEach((file) => {
-      formData.append("file", file);
-    });
-
-    formData.append("upload_preset", "YOUR_UPLOAD_PRESET"); // Replace with your Cloudinary upload preset
-
-    try {
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload`, // Replace with your Cloudinary cloud name
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const data = await response.json();
-      return data.secure_url;
-    } catch (error) {
-      console.error("Upload error:", error);
-      throw error;
-    }
-  };
 
   const handleDrop = async (files: File[]) => {
     setUploading(true);
     try {
-      const uploadedUrl = await uploadToCloudinary(files);
-      if (onChange) onChange(uploadedUrl);
+      const uploadedUrl = await uploadToCloudinary(files, folder);
+      if (onChange) onChange(uploadedUrl as any);
     } catch (error) {
       console.error("Upload failed:", error);
       // Handle error (e.g., show an error message to the user)

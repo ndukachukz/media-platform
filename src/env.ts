@@ -27,6 +27,9 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY: z.string(),
     NEXT_PUBLIC_SUPABASE_JWT_SECRET: z.string(),
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+    NEXT_PUBLIC_CLOUDINARY_API_SECRET: z.string(),
+    NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string(),
+    NEXT_PUBLIC_CLOUDINARY_API_NAME: z.string(),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   runtimeEnv: {
@@ -55,6 +58,11 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
+    NEXT_PUBLIC_CLOUDINARY_API_SECRET:
+      process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
+    NEXT_PUBLIC_CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+    NEXT_PUBLIC_CLOUDINARY_API_NAME:
+      process.env.NEXT_PUBLIC_CLOUDINARY_API_NAME,
   },
   // For Next.js >= 13.4.4, you only need to destructure client variables:
   // experimental__runtimeEnv: {

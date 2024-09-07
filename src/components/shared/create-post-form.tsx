@@ -67,12 +67,9 @@ export default function CreatePostForm() {
   };
 
   useEffect(() => {
-    console.log("form errors => ", form.formState.errors);
-    console.log("form values => ", form.getValues());
-  }, [form.getValues(), form.formState.errors]);
+    form.setValue("slug", form.getValues().title.replace(" ", "-"), {});
+  }, [form.getValues().title]);
 
-  console.log("form errors => ", form.formState.errors);
-  console.log("form values => ", form.getValues());
   return (
     <Container px={4} my={4}>
       <Form {...form}>
@@ -86,10 +83,11 @@ export default function CreatePostForm() {
                     <FileDropzone
                       title="Cover Image"
                       multiple={false}
+                      folder="posts"
                       {...field}
-                      onChange={(vals) => {
-                        console.log("Cover Image => ", vals);
-                      }}
+                      onChange={(urls) =>
+                        field.onChange((urls as unknown as string[])[0])
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -103,8 +101,10 @@ export default function CreatePostForm() {
                   <FormControl>
                     <FileDropzone
                       title="Additional Images"
+                      folder="posts"
                       multiple
                       {...field}
+                      value={field.value[0]}
                     />
                   </FormControl>
                   <FormMessage />
