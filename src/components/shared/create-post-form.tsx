@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { MutationObserver, useMutation } from "@tanstack/react-query";
 import FileDropzone from "./file-dropzone";
+import { useEffect } from "react";
 
 export default function CreatePostForm() {
   const form = useForm<CreatePostFormSchema>({
@@ -29,7 +30,6 @@ export default function CreatePostForm() {
       tags: [],
       slug: "",
       published: false,
-      
     },
   });
 
@@ -66,9 +66,13 @@ export default function CreatePostForm() {
     mutate(data);
   };
 
-  console.log(form.formState.errors);
-  console.log(form.getValues());
+  useEffect(() => {
+    console.log("form errors => ", form.formState.errors);
+    console.log("form values => ", form.getValues());
+  }, [form.getValues(), form.formState.errors]);
 
+  console.log("form errors => ", form.formState.errors);
+  console.log("form values => ", form.getValues());
   return (
     <Container px={4} my={4}>
       <Form {...form}>
@@ -83,6 +87,9 @@ export default function CreatePostForm() {
                       title="Cover Image"
                       multiple={false}
                       {...field}
+                      onChange={(vals) => {
+                        console.log("Cover Image => ", vals);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -116,7 +123,7 @@ export default function CreatePostForm() {
                         field.onChange(value.target.value.replace(" ", "-"));
                         console.log(value);
                       }}
-                      value={field.value}
+                      value={form.getValues().title.replace(" ", "-")}
                     />
                   </FormControl>
                   <FormMessage />

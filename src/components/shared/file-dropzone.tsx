@@ -29,9 +29,12 @@ export default function FileDropzone({
     );
   });
 
-  const uploadToCloudinary = async (file: File) => {
+  const uploadToCloudinary = async (files: File[]) => {
     const formData = new FormData();
-    formData.append("file", file);
+    files.forEach((file) => {
+      formData.append("file", file);
+    });
+
     formData.append("upload_preset", "YOUR_UPLOAD_PRESET"); // Replace with your Cloudinary upload preset
 
     try {
@@ -53,7 +56,7 @@ export default function FileDropzone({
   const handleDrop = async (files: File[]) => {
     setUploading(true);
     try {
-      const uploadedUrl = await uploadToCloudinary(files[0]);
+      const uploadedUrl = await uploadToCloudinary(files);
       if (onChange) onChange(uploadedUrl);
     } catch (error) {
       console.error("Upload failed:", error);
