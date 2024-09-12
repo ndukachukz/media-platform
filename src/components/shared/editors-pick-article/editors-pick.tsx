@@ -3,7 +3,7 @@ import { INewsArticle, ArticleTags } from "@/components/shared/news-article";
 import classes from "./editors-pick-article.module.css";
 import { cn } from "@/lib/utils";
 
-export default function EditorsPick({ className, ...article }: INewsArticle) {
+export default function EditorsPick({ className, article }: INewsArticle) {
   console.log("Article => ", article);
 
   return (
