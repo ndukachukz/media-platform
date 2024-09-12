@@ -6,6 +6,7 @@ import { Button } from "@mantine/core";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { INewsArticle } from "./news-article";
 import EditorsPick from "./editors-pick-article/editors-pick";
+import usePosts from "@/hooks/usePosts";
 
 function EditorsPickCarousel() {
   const [[page, direction], setPage] = useState([0, 0]);
@@ -14,65 +15,9 @@ function EditorsPickCarousel() {
     setPage([page + newDirection, newDirection]);
   };
 
-  const articles: INewsArticle[] = [
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John ",
-          last_name: "Doe",
-          image: "/api/placeholder/40/40",
-        },
-      },
-      created_at: new Date("2024-08-29T10:00:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John ",
-          last_name: "Doe",
-          image: "/api/placeholder/40/40",
-        },
-      },
-      created_at: new Date("2024-08-29T10:00:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John ",
-          last_name: "Doe",
-          image: "/api/placeholder/40/40",
-        },
-      },
-      created_at: new Date("2024-08-29T10:00:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-  ];
+  const { data, isError } = usePosts();
+
+  if (isError || !data?.posts) return <div>Error fetching posts</div>;
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -104,7 +49,9 @@ function EditorsPickCarousel() {
             opacity: { duration: 0.2 },
           }}
         >
-          <EditorsPick {...articles[Math.abs(page) % articles.length]} />
+          <EditorsPick
+            article={data.posts[Math.abs(page) % data.posts.length]}
+          />
         </motion.div>
       </AnimatePresence>
       <div className="flex my-3">
