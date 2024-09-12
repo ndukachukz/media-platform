@@ -82,7 +82,7 @@ export default function CreatePostForm() {
   return (
     <Container px={4} my={4}>
       {isSuccess && (
-        <Notification title={"Post Created🎉"}>
+        <Notification title={"Post Created🎉"} className="">
           Post {`"${data.title}"`}, Was created successfully.
           <ShadBtn asChild>
             <Link href={`/posts/${data.slug}`}>open</Link>

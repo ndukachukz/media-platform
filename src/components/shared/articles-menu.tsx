@@ -2,133 +2,22 @@
 import { Tabs, rem } from "@mantine/core";
 import { NewsArticle, INewsArticle } from "./news-article";
 import { Button } from "../ui/button";
+import usePosts from "@/hooks/usePosts";
+import { useEffect } from "react";
 
 function LatestStories() {
-  const articles: INewsArticle[] = [
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John",
-          image: "/api/placeholder/40/40",
-          last_name: "doe",
-        },
-      },
-      created_at: new Date("2024-08-29T14:45:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John",
-          image: "/api/placeholder/40/40",
-          last_name: "doe",
-        },
-      },
-      created_at: new Date("2024-08-29T14:45:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John",
-          image: "/api/placeholder/40/40",
-          last_name: "doe",
-        },
-      },
-      created_at: new Date("2024-08-29T14:45:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John",
-          image: "/api/placeholder/40/40",
-          last_name: "doe",
-        },
-      },
-      created_at: new Date("2024-08-29T14:45:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John",
-          image: "/api/placeholder/40/40",
-          last_name: "doe",
-        },
-      },
-      created_at: new Date("2024-08-29T14:45:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-    {
-      id: "1",
-      title: "Breaking News",
-      content: "Lorem ipsum dolor sit amet",
-      images: ["/api/placeholder/600/400"],
-      tags: [{ id: "", name: "World" }],
-      creator: {
-        profile: {
-          id: "1",
-          first_name: "John",
-          image: "/api/placeholder/40/40",
-          last_name: "doe",
-        },
-      },
-      created_at: new Date("2024-08-29T14:45:00"),
-      slug: "",
-      cover_image: null,
-      creator_id: "",
-    },
-  ];
+  const { data, isPending, isError } = usePosts();
+
+  if (!data?.posts || isError) {
+    return <div>No posts found...</div>; // Replace with your own loading component.
+  }
 
   return (
     <div className="mt-5">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <NewsArticle {...articles[0]} className="md:col-span-2 md:row-span-2" />
-        <NewsArticle {...articles[1]} />
-        <NewsArticle {...articles[2]} />
-        <NewsArticle {...articles[3]} className="md:col-span-2" />
-        <NewsArticle {...articles[4]} />
+        {data.posts.map((post, i) => (
+          <NewsArticle key={i} article={post} />
+        ))}
       </div>
       <div className="flex justify-center my-5">
         <Button variant="outline">View More</Button>
@@ -136,6 +25,7 @@ function LatestStories() {
     </div>
   );
 }
+
 export default function ArticlesMenu() {
   return (
     <Tabs defaultValue="latest-stories">

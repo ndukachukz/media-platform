@@ -15,6 +15,7 @@ import { Post, Tag, Profile } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import classes from "@/app/not-found.module.css";
+import usePosts from "@/hooks/usePosts";
 
 export default function PostsPage() {
   const add = useBreadCrumbsStore((store) => store.add);
@@ -23,19 +24,7 @@ export default function PostsPage() {
     add(["Posts"]);
   }, [add]);
 
-  const { data, isPending, isError } = useQuery({
-    queryFn: async () => {
-      const response = await fetch("http://localhost:3000/api/posts", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return await response.json();
-    },
-
-    queryKey: ["posts"],
-  });
+  const { data, isPending, isError } = usePosts();
 
   if (isError || !data?.posts || data.posts.length === 0) {
     return (
@@ -89,23 +78,18 @@ export default function PostsPage() {
         loaderProps={{ color: "brand", type: "bars" }}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-5 p-2">
-        {data?.posts?.map(
-          (
-            post: Post & { creator: { profile: Profile }; tags: Tag[] },
-            i: number
-          ) => (
-            <NewsArticle
-              // @ts-expect-error TODO: Fix this
-              creator={{
+        {data?.posts?.map((post) => (
+          <NewsArticle
+            article={{
+              ...post,
+              creator: {
                 profile: post.creator.profile,
-              }}
-              key={post.id}
-              // @ts-expect-error TODO: Fix this
-              tags={post.tags}
-              {...post}
-            />
-          )
-        )}
+              },
+              tags: post.tags,
+            }}
+            key={post.id}
+          />
+        ))}
       </div>
     </Box>
   );

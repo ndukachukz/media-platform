@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET(req: Request, res: Response) {
   try {
     const posts = await prisma.post.findMany({
+      orderBy: [{ created_at: "desc" }],
       include: { tags: true, creator: { include: { profile: true } } },
     });
     return Response.json({ posts }, { status: 200 });

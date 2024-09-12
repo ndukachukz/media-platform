@@ -17,14 +17,17 @@ import { rem } from "@mantine/core";
 import classes from "./news-article.module.css";
 import { Post, Profile, Tag } from "@prisma/client";
 import { cn } from "@/lib/utils";
+import usePosts from "@/hooks/usePosts";
+import { useRouter } from "next/navigation";
 
 export interface Author {
   id: number;
   name: string;
   avatar: string;
 }
-export interface INewsArticle
-  extends Pick<
+export interface INewsArticle {
+  className?: string;
+  article: Pick<
     Post,
     | "content"
     | "title"
@@ -34,15 +37,19 @@ export interface INewsArticle
     | "id"
     | "creator_id"
     | "images"
-  > {
-  className?: string;
-  tags: Tag[];
-  creator: {
-    profile: Pick<Profile, "image" | "first_name" | "last_name" | "id">;
+  > & {
+    tags: Tag[];
+    creator: {
+      profile: Pick<Profile, "image" | "first_name" | "last_name" | "id">;
+    };
   };
 }
 
-export function ArticleTags({ tags }: { tags: INewsArticle["tags"] }) {
+export function ArticleTags({
+  tags,
+}: {
+  tags: INewsArticle["article"]["tags"];
+}) {
   if (!Array.isArray(tags) || tags.length === 0) {
     return null; // or return a default component
   }
@@ -63,7 +70,7 @@ export function ArticleTags({ tags }: { tags: INewsArticle["tags"] }) {
   );
 }
 
-export function NewsArticle({ className, ...article }: INewsArticle) {
+export function NewsArticle({ className, article }: INewsArticle) {
   const theme = useMantineTheme();
 
   return (
@@ -82,22 +89,25 @@ export function NewsArticle({ className, ...article }: INewsArticle) {
 
       <Card.Section className="p-2">
         <ArticleTags tags={article.tags} />
+        <Link href={`/posts/${article.slug}`}>
+          <Text
+            className={classes.title}
+            fw={500}
+            component="a"
+            href={`/posts/${article.slug}`}
+          >
+            {article.title}
+          </Text>
 
-        <Text
-          className={classes.title}
-          fw={500}
-          component="a"
-          href={`/posts/${article.slug}`}
-        >
-          {article.title}
-        </Text>
-
-        <Text
-          fz="sm"
-          c="dimmed"
-          lineClamp={4}
-          dangerouslySetInnerHTML={{ __html: article.content as string }}
-        />
+          <Text
+            fz="sm"
+            ta="left"
+            className="flex items-start"
+            c="dimmed"
+            lineClamp={4}
+            dangerouslySetInnerHTML={{ __html: article.content as string }}
+          />
+        </Link>
 
         <Group justify="space-between" className={classes.footer}>
           <Center>
