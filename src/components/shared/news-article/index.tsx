@@ -16,6 +16,7 @@ import Image from "next/image";
 import { rem } from "@mantine/core";
 import classes from "./news-article.module.css";
 import { Post, Profile, Tag } from "@prisma/client";
+import { cn } from "@/lib/utils";
 
 export interface Author {
   id: number;
@@ -47,7 +48,7 @@ export function ArticleTags({ tags }: { tags: INewsArticle["tags"] }) {
   }
 
   return (
-    <>
+    <div className="flex gap-3 ">
       {tags.map((tag: Tag, i) => (
         <Badge
           key={tag.id ?? i}
@@ -58,7 +59,7 @@ export function ArticleTags({ tags }: { tags: INewsArticle["tags"] }) {
           {tag.name}
         </Badge>
       ))}
-    </>
+    </div>
   );
 }
 
@@ -66,69 +67,75 @@ export function NewsArticle({ className, ...article }: INewsArticle) {
   const theme = useMantineTheme();
 
   return (
-    <Card withBorder radius="md" className={classes.card}>
+    <Card withBorder radius="md" className={cn(classes.card)}>
       <Card.Section>
         <Link href={`/posts/${article.slug}`}>
           <Image
             src={article.cover_image || ""}
             alt={article.slug}
-            height={180}
-            width={180}
+            height={500}
+            width={500}
+            className="w-full h-full"
           />
         </Link>
       </Card.Section>
 
-      <ArticleTags tags={article.tags} />
+      <Card.Section className="p-2">
+        <ArticleTags tags={article.tags} />
 
-      <Text
-        className={classes.title}
-        fw={500}
-        component="a"
-        href={`/posts/${article.slug}`}
-      >
-        {article.title}
-      </Text>
+        <Text
+          className={classes.title}
+          fw={500}
+          component="a"
+          href={`/posts/${article.slug}`}
+        >
+          {article.title}
+        </Text>
 
-      <Text fz="sm" c="dimmed" lineClamp={4}>
-        {article.content}
-      </Text>
+        <Text
+          fz="sm"
+          c="dimmed"
+          lineClamp={4}
+          dangerouslySetInnerHTML={{ __html: article.content as string }}
+        />
 
-      <Group justify="space-between" className={classes.footer}>
-        <Center>
-          <Avatar
-            src={article.creator.profile.image || ""}
-            size={24}
-            radius="xl"
-            mr="xs"
-          />
-          <Text fz="sm" inline>
-            {article.creator.profile.first_name +
-              " " +
-              article.creator.profile.last_name}
-          </Text>
-        </Center>
-
-        <Group gap={8} mr={0}>
-          <ActionIcon className={classes.action}>
-            <Heart
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.red[6]}
+        <Group justify="space-between" className={classes.footer}>
+          <Center>
+            <Avatar
+              src={article.creator.profile.image || ""}
+              size={24}
+              radius="xl"
+              mr="xs"
             />
-          </ActionIcon>
-          <ActionIcon className={classes.action}>
-            <Bookmark
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.yellow[7]}
-            />
-          </ActionIcon>
-          <ActionIcon className={classes.action}>
-            <Share
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.blue[6]}
-            />
-          </ActionIcon>
+            <Text fz="sm" inline>
+              {article.creator.profile.first_name +
+                " " +
+                article.creator.profile.last_name}
+            </Text>
+          </Center>
+
+          <Group gap={8} mr={0}>
+            <ActionIcon className={classes.action}>
+              <Heart
+                style={{ width: rem(16), height: rem(16) }}
+                color={theme.colors.red[6]}
+              />
+            </ActionIcon>
+            <ActionIcon className={classes.action}>
+              <Bookmark
+                style={{ width: rem(16), height: rem(16) }}
+                color={theme.colors.yellow[7]}
+              />
+            </ActionIcon>
+            <ActionIcon className={classes.action}>
+              <Share
+                style={{ width: rem(16), height: rem(16) }}
+                color={theme.colors.blue[6]}
+              />
+            </ActionIcon>
+          </Group>
         </Group>
-      </Group>
+      </Card.Section>
     </Card>
   );
 }

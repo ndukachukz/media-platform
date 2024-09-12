@@ -19,10 +19,17 @@ export const defaultInitState: BreadCrumbsState = {
 export const createBreadCrumbsStore = (
   initState: BreadCrumbsState = defaultInitState
 ) => {
-  return createStore<BreadCrumbsStore>()((set) => ({
+  return createStore<BreadCrumbsStore>()((set, get) => ({
     ...initState,
     add: (breadCrumbs) =>
-      set((state) => ({ breadCrumbs: [...state.breadCrumbs, ...breadCrumbs] })),
+      set((state) => ({
+        breadCrumbs: [
+          ...state.breadCrumbs,
+          ...breadCrumbs.filter(
+            (breadCrumb) => !get().breadCrumbs.includes(breadCrumb)
+          ),
+        ],
+      })),
     remove: (breadCrumb) =>
       set((state) => ({
         breadCrumbs: state.breadCrumbs.filter((b) => b !== breadCrumb),

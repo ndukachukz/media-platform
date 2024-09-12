@@ -1,7 +1,14 @@
 "use client";
-import { TextInput, Button, Stack, Container, TagsInput } from "@mantine/core";
+import {
+  TextInput,
+  Stack,
+  Button,
+  Container,
+  TagsInput,
+  Notification,
+} from "@mantine/core";
 import RichTextEditorComponent from "@/components/shared/rich-text-editor";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import {
   createPostFormSchema,
@@ -18,6 +25,8 @@ import {
 import { MutationObserver, useMutation } from "@tanstack/react-query";
 import FileDropzone from "./file-dropzone";
 import { useEffect } from "react";
+import Link from "next/link";
+import { Button as ShadBtn } from "../ui/button";
 
 export default function CreatePostForm() {
   const form = useForm<CreatePostFormSchema>({
@@ -34,7 +43,7 @@ export default function CreatePostForm() {
   });
 
   const router = useRouter();
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isSuccess, isError, data } = useMutation({
     mutationFn: async (data: CreatePostFormSchema) => {
       // Make API request to create post
       const response = await fetch("/api/posts/create", {
@@ -52,7 +61,7 @@ export default function CreatePostForm() {
       return await response.json();
     },
     onSuccess: () => {
-      redirect("/posts");
+      router.push("/posts");
       // Handle success (e.g., show success message to user)
     },
     onError: (error) => {
@@ -72,6 +81,14 @@ export default function CreatePostForm() {
 
   return (
     <Container px={4} my={4}>
+      {isSuccess && (
+        <Notification title={"Post Created🎉"}>
+          Post {`"${data.title}"`}, Was created successfully.
+          <ShadBtn asChild>
+            <Link href={`/posts/${data.slug}`}>open</Link>
+          </ShadBtn>
+        </Notification>
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submit)}>
           <Stack gap="md">

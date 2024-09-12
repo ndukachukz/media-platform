@@ -21,7 +21,7 @@ export default function PostsPage() {
 
   useEffect(() => {
     add(["Posts"]);
-  }, []);
+  }, [add]);
 
   const { data, isPending, isError } = useQuery({
     queryFn: async () => {
@@ -80,7 +80,6 @@ export default function PostsPage() {
     );
   }
 
-  console.log("posts => ", data?.posts);
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -89,23 +88,25 @@ export default function PostsPage() {
         overlayProps={{ radius: "sm", blur: 2 }}
         loaderProps={{ color: "brand", type: "bars" }}
       />
-      {data?.posts?.map(
-        (
-          post: Post & { creator: { profile: Profile }; tags: Tag[] },
-          i: number
-        ) => (
-          <NewsArticle
-            // @ts-expect-error TODO: Fix this
-            creator={{
-              profile: post.creator.profile,
-            }}
-            key={post.id}
-            // @ts-expect-error TODO: Fix this
-            tags={post.tags}
-            {...post}
-          />
-        )
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-5 p-2">
+        {data?.posts?.map(
+          (
+            post: Post & { creator: { profile: Profile }; tags: Tag[] },
+            i: number
+          ) => (
+            <NewsArticle
+              // @ts-expect-error TODO: Fix this
+              creator={{
+                profile: post.creator.profile,
+              }}
+              key={post.id}
+              // @ts-expect-error TODO: Fix this
+              tags={post.tags}
+              {...post}
+            />
+          )
+        )}
+      </div>
     </Box>
   );
 }

@@ -142,10 +142,6 @@ function CreatePostValidator(data: CreatePostFormSchema): Array<string> {
       validations: [(value) => (value ? null : "images are required")],
     },
     {
-      field: "published",
-      validations: [(value) => (value ? null : "publish required")],
-    },
-    {
       field: "tags",
       validations: [(value) => (value ? null : "tags are required")],
     },
