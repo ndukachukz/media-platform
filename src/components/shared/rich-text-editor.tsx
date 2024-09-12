@@ -34,7 +34,7 @@ export default function RichTextEditorComponent(props: {
   });
 
   return (
-    <RichTextEditor editor={editor}>
+    <RichTextEditor editor={editor} >
       <RichTextEditor.Toolbar sticky stickyOffset={60}>
         <RichTextEditor.ControlsGroup>
           <RichTextEditor.Bold />

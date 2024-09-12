@@ -11,6 +11,7 @@ export async function POST(req: Request, res: Response) {
     const body = await req.json();
     const validatedData = createPostFormSchema.parse(body);
 
+    console.log("user => ", userId);
     const user = await prisma.user.findFirst({
       where: { id: userId },
     });
@@ -38,6 +39,7 @@ export async function POST(req: Request, res: Response) {
 
     return Response.json({ post }, { status: 201 });
   } catch (error) {
+    console.log("ERROR Creating post => ", error);
     return Response.json({ error }, { status: 500 });
   }
 }

@@ -54,6 +54,34 @@ export async function POST(req: Request) {
 
   switch (eventType) {
     case "user.created":
+      {
+        const {
+          email_addresses,
+          first_name,
+          last_name,
+          image_url,
+          username,
+          id: clerk_id,
+        } = evt.data;
+        // Create or update user in your database
+        await prisma.user.create({
+          data: {
+            id: clerk_id,
+            clerk_id,
+            profile: {
+              create: {
+                email_or_phone: email_addresses[0]?.email_address || "",
+                first_name: first_name || "",
+                last_name: last_name || "",
+                image: image_url,
+              },
+            },
+          },
+        });
+
+        console.log(`Processed ${eventType} event for user ${clerk_id}`);
+      }
+      break;
 
     case "user.updated":
       const { id: clerk_id, email_addresses, ...userData } = evt.data;
@@ -61,6 +89,7 @@ export async function POST(req: Request) {
       await prisma.user.upsert({
         where: { id: clerk_id, clerk_id },
         update: {
+          id: clerk_id,
           clerk_id,
           profile: {
             upsert: {
@@ -80,6 +109,7 @@ export async function POST(req: Request) {
           },
         },
         create: {
+          id: clerk_id,
           clerk_id: clerk_id,
           profile: {
             create: {
@@ -92,6 +122,21 @@ export async function POST(req: Request) {
         },
       });
       console.log(`Processed ${eventType} event for user ${clerk_id}`);
+      break;
+
+    case "user.deleted":
+      {
+        const { id: clerk_id } = evt.data;
+        // Create or update user in your database
+        await prisma.user.delete({
+          where: { id: clerk_id, clerk_id },
+          include: {
+            profile: { where: { user: { clerk_id } } },
+            sessions: { where: { user: { clerk_id } } },
+          },
+        });
+        console.log(`Processed ${eventType} event for user ${clerk_id}`);
+      }
       break;
 
     case "session.created":
